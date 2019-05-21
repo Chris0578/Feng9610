@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.usoft.mapping.userMapper">
+    <select id="login" parameterType="map" resultType="map">
+        SELECT  * FROM  tb_user WHERE  uname=#{uname} AND  upwd=md5(#{upwd})
+    </select>
+    <insert id="register" parameterType="map" >
+        INSERT  INTO  tb_user(id,uname,upwd,email,role,registerTime,lastLoginTime)
+        VALUES (NULL ,#{uname},md5(#{upwd}),#{email},'employee',now(),now());
+        /*role是写死的，为employee，*/
+    </insert>
+</mapper>
