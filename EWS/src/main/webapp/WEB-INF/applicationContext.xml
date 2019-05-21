@@ -3,5 +3,35 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
-<context:component-scan base-package="com.isoft.service.impl,com.isoft.dao.impl"/>
+<context:component-scan base-package="com.usoft.service.impl,com.usoft.dao.impl"/>
+    <!--开启注解-->
+    <context:annotation-config></context:annotation-config>
+    <context:component-scan base-package="com.usoft.service.impl,com.usoft.dao.impl"></context:component-scan>
+    <!-- mybatis整合-->
+
+    <!--动态加载jdbc配置文件-->
+    <context:property-placeholder location="classpath*:jdbcConfig.properties"></context:property-placeholder>
+
+    <!--5.0配置数据源-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassNmae}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+   <!--8.0版本配置
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+        <property name="url" value="jdbc:mysql://localhost:3306/ewsdb?serverTimezone=UTC"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="1234"></property>
+    </bean>-->
+    <!--创建sqlsessionfactorybean对象-->
+    <bean id="sessionFactoryBean" class= "org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="mapperLocations" value="classpath*:**/*Mapper.xml"></property>
+    </bean>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
 </beans>
